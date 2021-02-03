@@ -17,5 +17,8 @@
         "psr-4": {
             "klebervmv\\": "src/"
         }
+    },
+    {
+    "license": "MIT"
     }
 }
