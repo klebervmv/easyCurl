@@ -2,6 +2,7 @@
     "name": "klebervmv/easycurl",
     "description": "EasyCurl is a library that facilitates the use of Curl requests",
     "type": "library",
+    "license": "MIT",
     "authors": [
         {
             "name": "Kleberton Vilela",
@@ -17,6 +18,5 @@
         "psr-4": {
             "klebervmv\\": "src/"
         }
-    },
-    "license": "MIT"
+    }
 }
