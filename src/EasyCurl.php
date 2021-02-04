@@ -9,7 +9,7 @@
 namespace klebervmv;
 
 /**
- * Description of CurlControle
+ * Description of EasyCurl
  *
  * @author klebertonvilela
  */
@@ -19,7 +19,7 @@ class EasyCurl {
     private $curlOpt;
     private $error;
     private $httpCode;
-    private $Result;
+    private $result;
     private $contentType;
 
     /**
@@ -40,10 +40,10 @@ class EasyCurl {
     }
 
     /**
-     * 
+     *
      * @param string $Method GET,POST,PUT,DELETE
      * @param string $endPoint /endpoint
-     * @param  $postFields array ou stdClass, pois será convertido em um Json
+     * @param  $postFields array ou stdClass, as it will be converted into a Json
      */
     public function render(string $Method, string $endPoint, $postFields = null): EasyCurl {
 
@@ -55,9 +55,9 @@ class EasyCurl {
     }
 
     /**
-     * 
-     * @param string $header string para header no formato "chave:valor"
-     * pose ser chamada diversas vezes pois o valor informado será inserido em um array 
+     *
+     * @param string $header string for header in "key: value" format
+     * can be called several times as the value entered will be inserted into an array
      */
     public function setHeader(string $header): EasyCurl {
         $this->curlOpt->header[] = $header;
@@ -99,7 +99,7 @@ class EasyCurl {
         }
 
         $this->httpCode = curl_getinfo($this->curlInit)['http_code'];
-        $this->Result = $responseData;
+        $this->result = $responseData;
 
         if ($this->contentType === "json") {
             $this->jsDecode();
@@ -109,7 +109,7 @@ class EasyCurl {
     }
 
     function jsDecode() {
-        $this->Result = json_decode($this->Result, true);
+        $this->result = json_decode($this->result, true);
     }
 
     function getHttpCode() {
@@ -117,7 +117,7 @@ class EasyCurl {
     }
 
     function getResult() {
-        return $this->Result;
+        return $this->result;
     }
 
     function getError() {
