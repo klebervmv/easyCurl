@@ -1,22 +1,24 @@
 {
-    "name": "klebervmv/easycurl",
-    "description": "EasyCurl is a library that facilitates the use of Curl requests",
-    "type": "library",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Kleberton Vilela",
-            "email": "klebervmv@gmail.com",
-            "homepage": "https://github.com/klebervmv"
-        }
-    ],
-    "minimum-stability": "dev",
-    "require": {
-        "php": ">=7.2"
-    },
-    "autoload": {
-        "psr-4": {
-            "klebervmv\\": "src/"
-        }
+  "name": "klebervmv/easycurl",
+  "description": "EasyCurl is a library that facilitates the use of Curl requests",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Kleberton Vilela",
+      "email": "klebervmv@gmail.com",
+      "homepage": "https://github.com/klebervmv"
     }
+  ],
+  "minimum-stability": "dev",
+  "require": {
+    "php": ">=7.2",
+    "ext-curl": "*",
+    "ext-json": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "klebervmv\\": "src/"
+    }
+  }
 }
