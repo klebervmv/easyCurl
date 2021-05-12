@@ -108,7 +108,6 @@ class EasyCurl
 
         return $this;
     }
-
     /**
      * @return $this
      */
