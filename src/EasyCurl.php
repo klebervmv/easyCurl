@@ -175,6 +175,7 @@ class EasyCurl
         return $this->Result;
     }
 
+
     /**
      * @return string|null
      */
