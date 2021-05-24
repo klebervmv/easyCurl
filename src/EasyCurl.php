@@ -176,9 +176,9 @@ class EasyCurl
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    function getError(): string
+    function getError(): ?string
     {
         return $this->error;
     }
