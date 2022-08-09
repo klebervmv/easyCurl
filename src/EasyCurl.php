@@ -75,7 +75,6 @@
             return $this;
         }
 
-
         /**
          *
          * @param string $header string para header no formato "chave:valor"
