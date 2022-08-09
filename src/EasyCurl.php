@@ -17,6 +17,11 @@
      */
     class EasyCurl
     {
+
+        const CONTENTTYPJSON = 'json';
+        const CONTENTTYPEXML = 'xml';
+        const CONTENTTYPEFORM = 'form';
+
         /**
          * @var false|resource
          */
@@ -48,7 +53,7 @@
          * @param bool $sslVerify
          * @param string $contentType
          */
-        public function __construct(string $baseUrl, bool $sslVerify = true, string $contentType = "json")
+        public function __construct(string $baseUrl, bool $sslVerify = true, string $contentType = self::CONTENTTYPJSON)
         {
             $this->curlOpt = new stdClass();
             $this->curlOpt->baseUrl = $baseUrl;
@@ -70,8 +75,6 @@
             $this->curlOpt->method = $Method;
             $this->curlOpt->endPoint = $endPoint;
             $this->curlOpt->postField = (!empty($postFields)) ? (($this->contentType === "json") ? json_encode($postFields) : $postFields) : null;
-
-
             return $this;
         }
 
@@ -102,9 +105,24 @@
         public function resetHeader(): self
         {
             unset($this->curlOpt->header);
-            $ct = ($this->contentType === "json") ? "application/json" : (($this->contentType === "xml") ? "text/xml;charset=UTF-8" : "");
-            $this->curlOpt->header[] = (!empty($ct)) ? "Content-Type:" . $ct : "";
 
+            switch ($this->contentType) {
+                case 'json':
+                    $ct = 'application/json';
+                    break;
+                case 'xml':
+                    $ct = 'text/xml;charset=UTF-8';
+                    break;
+
+                case 'form':
+                    $ct = 'x-www-form-urlencoded';
+                    break;
+
+                default:
+                    $ct = '';
+                    break;
+            }
+            $this->curlOpt->header[] = (!empty($ct)) ? "Content-Type:$ct" : "";
             return $this;
         }
 
