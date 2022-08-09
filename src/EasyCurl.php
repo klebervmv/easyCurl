@@ -115,7 +115,7 @@
                     break;
 
                 case 'form':
-                    $ct = 'x-www-form-urlencoded';
+                    $ct = 'application/x-www-form-urlencoded';
                     break;
 
                 default:
