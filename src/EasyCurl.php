@@ -160,10 +160,15 @@
                 CURLOPT_POSTFIELDS => $this->curlOpt->postField,
                 CURLOPT_HTTPHEADER => $this->curlOpt->header,
                 CURLOPT_SSL_VERIFYPEER => $this->curlOpt->sslFerify,
-                CURLOPT_SSLCERT => $this->curlOpt->sslcert ?? null,
-                CURLOPT_SSLKEY => $this->curlOpt->sslKey ?? null,
                 CURLOPT_RETURNTRANSFER => true
             );
+
+            if(!empty($this->curlOpt->sslcert)){
+                $options[CURLOPT_SSLCERT] = $this->curlOpt->sslcert;
+            }
+            if(!empty($this->curlOpt->sslKey)){
+                $options[CURLOPT_SSLKEY] = $this->curlOpt->sslKey;
+            }
             curl_setopt_array($this->curlInit, $options);
             return $this;
         }
