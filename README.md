@@ -27,8 +27,8 @@ GET, POST, PUT and DELEATE. Still allows sending images via CURL
 2° is ssl verification - default true;<br>
 3° is the json or xml post type - default json.
 
-From version 1.0.10 onwards, the possibility of making requests and not waiting for them to return was implemented. To
-do this, insert the false option within the send method: send(false).
+From version 1.0.10 onwards, the possibility of making requests and not waiting for them to return was implemented.
+To do this, insert the false option within the send method: send(false).
 
 ```PHP
 <?php
