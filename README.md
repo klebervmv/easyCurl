@@ -20,10 +20,15 @@ The easyCurl was developed to facilitate the use of curl communication for simpl
 GET, POST, PUT and DELEATE. Still allows sending images via CURL
 
 ### Details of Construct:
+
 #### The construct has 3 parameters, with only one mandatory:
+
 1° parameter is the Base URL;<br>
 2° is ssl verification - default true;<br>
 3° is the json or xml post type - default json.
+
+From version 1.0.10 onwards, the possibility of making requests and not waiting for them to return was implemented. To
+do this, insert the false option within the send method: send(false).
 
 ```PHP
 <?php
@@ -98,7 +103,9 @@ use klebervmv\EasyCurl;
 ```
 
 ### Reset end inserting a new header
+
 #### You can clear the entire header and insert new header parameters:
+
 ```PHP
 <?php
 
