@@ -194,7 +194,7 @@ class EasyCurl
             $this->options[CURLOPT_HEADER] = 0;
             $this->options[CURLOPT_RETURNTRANSFER] = false;
             $this->options[CURLOPT_NOSIGNAL] = '';
-            $this->options[CURLOPT_TIMEOUT_MS] = 80;
+            $this->options[CURLOPT_TIMEOUT_MS] = 120;
         }
 
         $this->prepareCurlOpt();
