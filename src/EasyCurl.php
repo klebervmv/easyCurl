@@ -18,9 +18,9 @@ use stdClass;
 class EasyCurl
 {
 
-    public const CONTENTTYPJSON = 'json';
-    public const CONTENTTYPEXML = 'xml';
-    public const CONTENTTYPEFORM = 'form';
+    const CONTENTTYPJSON = 'json';
+    const CONTENTTYPEXML = 'xml';
+    const CONTENTTYPEFORM = 'form';
 
     /**
      * @var false|resource
@@ -46,10 +46,6 @@ class EasyCurl
      * @var string
      */
     private $contentType;
-    /**
-     * @var array
-     */
-    private $options;
 
     /**
      * EasyCurl constructor.
@@ -64,7 +60,6 @@ class EasyCurl
         $this->curlOpt->sslFerify = $sslVerify;
         $this->contentType = $contentType;
         $this->resetHeader();
-        $this->options = [];
 
         $this->curlInit = curl_init();
     }
@@ -79,9 +74,20 @@ class EasyCurl
     {
         $this->curlOpt->method = $Method;
         $this->curlOpt->endPoint = $endPoint;
-        $this->curlOpt->postField = (!empty($postFields)) ? (($this->contentType === "json") ? json_encode(
-            $postFields
-        ) : $postFields) : null;
+        $this->curlOpt->postField = null;
+        if (!empty($postFields)) {
+            switch ($this->contentType) {
+                case "json":
+                    $this->curlOpt->postField = json_encode($postFields);
+                    break;
+                case "form":
+                    $this->curlOpt->postField = http_build_query($postFields);
+                    break;
+                default:
+                    $this->curlOpt->postField = $postFields;
+                    break;
+            }
+        }
         return $this;
     }
 
@@ -166,37 +172,30 @@ class EasyCurl
         ) : $this->curlOpt->baseUrl;
 
         $separator = (substr($this->curlOpt->endPoint, 0, 1) === "/") ? "" : "/";
-        $this->options[CURLOPT_URL] = $this->curlOpt->baseUrl . $separator . $this->curlOpt->endPoint;
-        $this->options[CURLOPT_CUSTOMREQUEST] = $this->curlOpt->method;
-        $this->options[CURLOPT_POSTFIELDS] = $this->curlOpt->postField;
-        $this->options[CURLOPT_HTTPHEADER] = $this->curlOpt->header;
-        $this->options[CURLOPT_SSL_VERIFYPEER] = $this->curlOpt->sslFerify;
+        $options = array(
+            CURLOPT_URL => $this->curlOpt->baseUrl . $separator . $this->curlOpt->endPoint,
+            CURLOPT_CUSTOMREQUEST => $this->curlOpt->method,
+            CURLOPT_POSTFIELDS => $this->curlOpt->postField,
+            CURLOPT_HTTPHEADER => $this->curlOpt->header,
+            CURLOPT_SSL_VERIFYPEER => $this->curlOpt->sslFerify,
+            CURLOPT_RETURNTRANSFER => true
+        );
 
         if (!empty($this->curlOpt->sslcert)) {
-            $this->options[CURLOPT_SSLCERT] = $this->curlOpt->sslcert;
+            $options[CURLOPT_SSLCERT] = $this->curlOpt->sslcert;
         }
         if (!empty($this->curlOpt->sslKey)) {
-            $this->options[CURLOPT_SSLKEY] = $this->curlOpt->sslKey;
+            $options[CURLOPT_SSLKEY] = $this->curlOpt->sslKey;
         }
-        curl_setopt_array($this->curlInit, $this->options);
+        curl_setopt_array($this->curlInit, $options);
         return $this;
     }
 
     /**
-     * @param bool $waitReturn
      * @return $this
      */
-    public function send(bool $waitReturn = true): self
+    public function send(): self
     {
-        $this->options[CURLOPT_RETURNTRANSFER] = true;
-
-        if (!$waitReturn) {
-            $this->options[CURLOPT_HEADER] = 0;
-            $this->options[CURLOPT_RETURNTRANSFER] = false;
-            $this->options[CURLOPT_NOSIGNAL] = '';
-            $this->options[CURLOPT_TIMEOUT_MS] = 120;
-        }
-
         $this->prepareCurlOpt();
         $responseData = curl_exec($this->curlInit);
 
@@ -254,4 +253,5 @@ class EasyCurl
     {
         return $this->curlInit;
     }
+
 }
