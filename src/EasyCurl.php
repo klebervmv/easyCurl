@@ -35,9 +35,9 @@ class EasyCurl
      */
     private $error;
     /**
-     * @var
+     * @var int
      */
-    private $httpCode;
+    private $httpCode = 0;
     /**
      * @var
      */
@@ -46,6 +46,16 @@ class EasyCurl
      * @var string
      */
     private $contentType;
+    /**
+     * Tempo máximo (em segundos) para a requisição inteira. 0 = sem limite (padrão do cURL).
+     * @var int
+     */
+    private $timeout = 0;
+    /**
+     * Tempo máximo (em segundos) para estabelecer a conexão. 0 = padrão do cURL.
+     * @var int
+     */
+    private $connectTimeout = 0;
 
     /**
      * EasyCurl constructor.
@@ -109,6 +119,22 @@ class EasyCurl
     public function setContentType(string $contentType): self
     {
         $this->contentType = $contentType;
+        return $this;
+    }
+
+    /**
+     * Define timeouts do cURL para evitar que uma requisição a um endpoint que não
+     * responde fique presa indefinidamente. Sem chamar este método o comportamento
+     * é o mesmo de antes (sem limite).
+     *
+     * @param int $timeout        segundos para a requisição inteira (0 = sem limite)
+     * @param int $connectTimeout segundos para estabelecer a conexão (0 = padrão do cURL)
+     * @return $this
+     */
+    public function setTimeout(int $timeout, int $connectTimeout = 0): self
+    {
+        $this->timeout = $timeout;
+        $this->connectTimeout = $connectTimeout;
         return $this;
     }
 
@@ -186,6 +212,12 @@ class EasyCurl
         }
         if (!empty($this->curlOpt->sslKey)) {
             $options[CURLOPT_SSLKEY] = $this->curlOpt->sslKey;
+        }
+        if ($this->timeout > 0) {
+            $options[CURLOPT_TIMEOUT] = $this->timeout;
+        }
+        if ($this->connectTimeout > 0) {
+            $options[CURLOPT_CONNECTTIMEOUT] = $this->connectTimeout;
         }
         curl_setopt_array($this->curlInit, $options);
         return $this;
